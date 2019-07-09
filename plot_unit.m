@@ -1,7 +1,5 @@
 function [user_comm,RESPtype,comnt]=plot_unit(ui,unit_list,RelTrials,do_odors,RelCuts,dates,sites,units,pval,do_stims)
-%%%%%%%%%%%%%%%%%%%
-RelCuts=6;
-%%%%%%%%%%%%%%%%
+% the function display raster plot and psth and return the score for reponse property and response time
 unit_location=unit_list(ui);
 rel_trials_strc=RelTrials{ui};
 sstring=[dates{ui}, '-s' ,num2str(sites(ui))];
