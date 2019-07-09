@@ -1,6 +1,4 @@
 function DATA_STRUCT = prepare_data_for_michals_analysis(datafilename,do_stims,mating_male_strain,TAKE_EPOCH,MINTRIALREQUIREMENT,PTHRESH,take_units,manual_selection)
-% Adding the ESTRUS factor to the original funciotn written for ROhini's
-% data (3/2/2019)
 
 load(datafilename);
 
@@ -36,21 +34,14 @@ ALL_APP_MODS  = [];
 ALL_STM_MODS = [];
 ALL_S_STM_MODS = [];
 ALL_FULL_MODS = [];
-APP_Sa  = [];  % Rohini on 11jan18 
-STM_Sa  =  []; % Rohini on 11jan18
-FULL_Sa =  []; % Rohini on 11jan18
-S_STM_Sa  =  []; % Rohini on 11jan18
-ALL_BASELINES =  []; % YBS March 2018
+APP_Sa  = [];  
+STM_Sa  =  []; 
+FULL_Sa =  []; 
+S_STM_Sa  =  []; 
+ALL_BASELINES =  []; 
 TRIALS=[];
 UNIT_ORDER=[];
-% SR = []; % Response for any of the two relevant stimuli
-% AR = []; % AR is for any response whatsoever, on the sitmulation that is
-% the full cut epoch, includng applicaiton and stimulation
-% the meaning of the epoch depends on the way the data was prepared in 
-% make_data_for_wild_vs_inbred_individual_responses -it should be
-% 1: application
-% 2: stimulation
-% 3: full time
+
 
 % run over all sessions included in the data file
 Nsessions = length(meanM);
@@ -87,10 +78,7 @@ for i = 1:Nsessions
         SESSION_SITES   =  [SESSION_SITES   thesesites];
         SESSION_MALE_NUM=  [SESSION_MALE_NUM thesesmalenum];
         
-%         SESSION_STRAINS =  [SESSION_STRAINS thesestrains];  
-%         SESSION_ESTRUS  =  [SESSION_ESTRUS  theseestrus];  
-%         SESSION_SEX     =  [SESSION_SEX;    thesesex'];
-        
+
         % Get the response modulations for each of the cuts
         % The fact that 1,2 and 3 are app, stm and full are defined in the
         % variable do_cuts in make_data_for_GIF_mixed_urine_responses
@@ -274,41 +262,6 @@ switch mating_male_strain
     otherwise
         rel_male_ind  = find(contains(SESSION_MALE_NUM,mating_male_strain));
 end
-% switch subject_sex{1}
-%     case 'ANY'
-%         rel_subject_sex_ind    = 1:length(SESSION_SEX);
-%     otherwise
-%         rel_subject_sex_ind    = find(ismember(SESSION_SEX,subject_sex));
-% end
-% % estrus stage...
-% switch subject_estrus{1}
-%     case 'ANY'
-%         rel_subject_estrus_ind    = 1:length(SESSION_ESTRUS);
-%     otherwise
-%         rel_subject_estrus_ind    = find(ismember(SESSION_ESTRUS,subject_sex));
-% end
-
-
-
-
-% turn the cell array into a single string with all names
-% take_subject_strain_string = subject_strain{1};
-% for i = 2:length(subject_strain)
-%     take_subject_strain_string = [take_subject_strain_string '_' subject_strain{i}];
-% end
-% take_subject_sex_string = subject_sex{1};
-% for i = 2:length(subject_sex)
-%     take_subject_sex_string = [take_subject_sex_string '_' subject_sex{i}];
-% end
-% take_subject_estrus_string = subject_estrus{1};
-% for i = 2:length(subject_estrus)
-%     take_subject_estrus_string = [take_subject_estrus_string '_' subject_estrus{i}];
-% end
-% 
-% 
-% disp(['based on subject strains, selected ' num2str(length(rel_subject_strain_ind)) ' entries of ' num2str(length(SESSION_STRAINS)) ' total entries'])
-% disp(['based on subject sex,        selected ' num2str(length(rel_subject_sex_ind))    ' entries of ' num2str(length(SESSION_SEX)) ' total entries'])
-% disp(['based on subject estrus,     selected ' num2str(length(rel_subject_estrus_ind))    ' entries of ' num2str(length(SESSION_ESTRUS)) ' total entries'])
 
 
 % Apply all selection criteria
@@ -320,12 +273,6 @@ rel_inds      = intersect(rel_unit_inds, enough_trials);
 rel_inds = intersect(rel_inds,find(manually_selected_units));
 % Select based on male strain 
 rel_inds = intersect(rel_inds,rel_male_ind);
-
-% % Select based on subject sex (March 2018)
-% rel_inds = intersect(rel_inds,rel_subject_sex_ind);
-% % select based on estrus stage
-% rel_inds = intersect(rel_inds,rel_subject_estrus_ind);
-
 
 [~,stim_set,~] = fileparts(datafilename);
 
@@ -339,7 +286,6 @@ DATA_STRUCT.SESSION_SITES   = SESSION_SITES(rel_inds);
 DATA_STRUCT.MODS            = MODS(rel_inds,:);
 DATA_STRUCT.STDS            = STDS(rel_inds,:);
 DATA_STRUCT.GRADES          = GRADES(rel_inds);
-% DATA_STRUCT.SESSION_STRAINS = SESSION_STRAINS(rel_inds);
 DATA_STRUCT.PVAL            = PVAL(rel_inds,:);
 % also the other measures should be filtered (App_Sa etc ...)
 DATA_STRUCT.ALL_BASELINES   = ALL_BASELINES(rel_inds); % baselines
@@ -348,7 +294,6 @@ SESSION_MALE_NUM=string(SESSION_MALE_NUM);
 DATA_STRUCT.SESSION_MALE_NUM = SESSION_MALE_NUM(rel_inds);
 DATA_STRUCT.TRIALS           = TRIALS(rel_inds); 
 DATA_STRUCT.UNIT_ORDER           = UNIT_ORDER(rel_inds); 
-% DATA_STRUCT.SESSION_SEX    = SESSION_SEX(rel_inds);
 DATA_STRUCT.ALL_MODS=ALL_MODS(rel_inds,:);
 
 
