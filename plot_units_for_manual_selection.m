@@ -25,6 +25,8 @@ switch TAKE_EPOCH
 end
 
 %% ploting the raster and psth and changing the excel table
+
+%read excel table:
 % [num,~,RAW]=xlsread([basepath,'\huji_cell_database']);
 [num,~,RAW]=xlsread(['H:\tmp\tmp.xlsx']);
 headers     = RAW(1,1:end);
@@ -40,6 +42,7 @@ resp_letter = alphabet(resp_col);
 user_letter = alphabet(user_col);
 units_list  = cell2mat(RAW(2:end,unit_col));
 sites_list  = cell2mat(RAW(2:end,site_col));
+
 for ui=1:length(units) %gonig over the units
     units_row=find(units_list==units(ui))+1;% unit_list is without the headers
     dates_row=find(strcmp(RAW(:,date_col),dates(ui)));
