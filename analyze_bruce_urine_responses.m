@@ -96,6 +96,7 @@ if PLOT_UNIST_FOR_MANUAL_SELECTION
     %in order to mark good and not good cells for manual selection:
     plot_units_for_manual_selection(PVAL,PTHRESH,DATA_STRUCT,TAKE_EPOCH,TRIALS,UNIT_ORDER,do_stims,basepath)
 end
+% for differentiating the different females in the experiments:
 GroupMembership=zeros(size(SESSION_MALE_NUM));
 GroupMembership(strcmp(SESSION_MALE_NUM,'naive female'))=1;
 GroupMembership(strcmp(SESSION_MALE_NUM,'mated with bc#1'))=2;
@@ -103,8 +104,6 @@ GroupMembership(strcmp(SESSION_MALE_NUM,'mated with bc#2'))=2;
 GroupMembership(strcmp(SESSION_MALE_NUM,'mated with bc'))=2;
 GroupMembership(strcmp(SESSION_MALE_NUM,'mated with c57#1'))=3;
 GroupMembership(strcmp(SESSION_MALE_NUM,'mated with c57#2'))=3;
-
-
 
  % report number of units of each type
 for i = 1:length(GRADES)
@@ -118,18 +117,18 @@ for i = 1:length(un_grades)
     disp([num2str(sum(strcmp(un_grades{i},GRADES))) ' ' un_grades{i} ' units']);
 end
 
-% % % % %
+% % % % % compare responses between 2 groups of stimuli
 if DO_PAIRWISE
     for i =1:length(pairwise_comp)
         do_pairwise_comparison_mf(MODS,STDS,PVAL,PTHRESH,GRADES,do_stims,pairwise_comp{i},GroupMembership,INFO_STR);
         %[mean,median,ttestpval,signpval] =
     end
 end
-
+% % % % % compare baseline activity in the different females
 if COMPARE_BASELINES
     plot_baselines(GroupMembership,ALL_BASELINES,PVAL,PTHRESH)
 end
-
+% % % % % anlyze the no wash trials 
 if strcmp(stim_set,'no_wash')
     if PLOT_NO_WASH_DATA
         plot_no_wash_data(ALL_MODS,PVAL,PTHRESH,GroupMembership,do_stims)
