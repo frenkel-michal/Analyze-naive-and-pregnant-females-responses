@@ -1,4 +1,6 @@
 function plot_units_for_manual_selection(PVAL,PTHRESH,DATA_STRUCT,TAKE_EPOCH,TRIALS,UNIT_ORDER,do_stims,basepath)
+% the function go over all the significant responding units and plot the raster and psth of the response
+% in addition the score of the response and the response time is saved in the excel file
 SIGS     = PVAL <= PTHRESH;
 anysigs         = sum(SIGS,2) > 0;  % any significant response
 UNIT_NUMS        = DATA_STRUCT.UNIT_NUMS;
