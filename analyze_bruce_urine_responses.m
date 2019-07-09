@@ -1,15 +1,13 @@
 function analyze_bruce_urine_responses
-PLOT_UNIST_FOR_MANUAL_SELECTION = 1;
-SHOW_SINGLE_SESSION_CORRS = 0;
-% General response properties
-DO_POPULATION_RESPONSE = 0;
-%CLUST_DIST = 'euclidean';
-CLUST_DIST = 'correlation';
+% the function analyze the data. it plots each unit for manual selection,
+% present population respons properties and single sessions correlations.  
 
+% define which analysis to perform:
+PLOT_UNIST_FOR_MANUAL_SELECTION = 1;
 DO_PAIRWISE = 0;
-DO_THREEWAY = 0;
 COMPARE_BASELINES=0;
 
+%% define the data to analyse:
 basepath='H:\MATLAB\Michals_data\';
 
 stim_set= 'normal_trials';
@@ -17,18 +15,20 @@ stim_set= 'normal_trials';
 
 % TAKE_EPOCH = 'FULL';
 % TAKE_EPOCH = 'BEST';
-TAKE_EPOCH = 'STIM';
+TAKE_EPOCH   = 'STIM';
 % TAKE_EPOCH = 'SHORT_STIM';
 
+%% define parameters
 % minimal number of required trials
 MINTRIALREQUIREMENT = 4;
 % minimal p value for including a response
 PTHRESH = 0.05;
+
 %% unit grade to include
 % take_units = 'Single';
 take_units = 'MUA+Single';
-
 % take_units = 'everything';
+
 %% whether to take only the good units upon visual selection
 % manual_selection = 'take only good';
 % manual_selection = 'exclude bad';
@@ -41,42 +41,33 @@ switch stim_set
         datafile = [basepath ,'michals_dataV3'];
         
         % Defines the entire set of stimuli to analyze
-        do_stims{1} = 'F_BC';
-        do_stims{2} = 'F_C57';
-        do_stims{3} = 'M1_BC';
-        do_stims{4} = 'M1_C57';
-        do_stims{5} = 'M2_BC';
-        do_stims{6} = 'M2_C57';
-        do_stims{7} = 'P';
-        do_stims{8} = 'cas_BC';
-        do_stims{9} = 'cas_C57';
+        do_stims{1} = 'F_BC';   % females BC
+        do_stims{2} = 'F_C57';  % females C57
+        do_stims{3} = 'M1_BC';  % male BC #1
+        do_stims{4} = 'M1_C57'; % male C57
+        do_stims{5} = 'M2_BC';  % male BC #2
+        do_stims{6} = 'M2_C57'; % male C57 #2
+        do_stims{7} = 'P';      % predator
+        do_stims{8} = 'cas_BC'; % castrated BC 
+        do_stims{9} = 'cas_C57';% castrated C57
         
-        % do_pairwise_comparison(SESSION_IDS,UNIT_NUMS,GRADES,PVAL,PTHRESH,MODS,do_stims,INFO_STR,1);
-        %         pairwise_comp{1} = {{'M1_C57','M2_C57'},{'M1_BC','M2_BC'}};
-        pairwise_comp{1} = {{'M1_BC','M2_BC'},{'M1_C57','M2_C57'}};
-       
-        
-        % %         pairwise_comp{1} = {{'WM','M_C57','M_BC'},{'WF','F_C57','F_BC'}};
-        % %         % wild vs inbred
-        % %         pairwise_comp{2} = {{'WM','WF'},{'M_C57','M_BC','F_C57','F_BC'}};
-        
+        % BC males vs C57 males
+        pairwise_comp{1} = {{'M1_BC','M2_BC'},{'M1_C57','M2_C57'}};    
         PLOT_NO_WASH_DATA=0;
+        
     case 'no_wash'
         
         datafile = [basepath ,'michals_dataV3'];
         
         % Defines the entire set of stimuli to analyze
-        do_stims{3} = 'MM';
-        do_stims{4} = 'MFP';
-        do_stims{1} = 'NoWash_MFP';
-        do_stims{2} = 'NoWash_MM';
+        do_stims{3} = 'MM';         % mating male
+        do_stims{4} = 'MFP';        % male-female-predator
+        do_stims{1} = 'NoWash_MFP'; % male-female-predator no wash
+        do_stims{2} = 'NoWash_MM';  % mating male no wash
         
         MINTRIALREQUIREMENT = 1;
-        % do_pairwise_comparison(SESSION_IDS,UNIT_NUMS,GRADES,PVAL,PTHRESH,MODS,do_stims,INFO_STR,1);
-        %         pairwise_comp{1} = {{'M1_C57','M2_C57'},{'M1_BC','M2_BC'}};
-        %         pairwise_comp{1} = {{'M1_BC','M2_BC'},{'M1_C57','M2_C57'}};
+       % mating male vs male-female-predator
         pairwise_comp{1} = {{'NoWash_MM','MM'},{'NoWash_MFP','MFP'}};
-        
         PLOT_NO_WASH_DATA=1;
         
 end
@@ -115,10 +106,10 @@ GroupMembership(strcmp(SESSION_MALE_NUM,'mated with c57#2'))=3;
 
 
 
-% % report number of units of each type
-% for i = 1:length(GRADES)
-%     disp(['session : ' SESSION_IDS{i} ' ' num2str(UNIT_NUMS(i)) ' ' GRADES{i} ]);
-% end
+ % report number of units of each type
+for i = 1:length(GRADES)
+     disp(['session : ' SESSION_IDS{i} ' ' num2str(UNIT_NUMS(i)) ' ' GRADES{i} ]);
+end
 
 
 % % report number of units for each grade
@@ -126,31 +117,12 @@ un_grades = unique(GRADES);
 for i = 1:length(un_grades)
     disp([num2str(sum(strcmp(un_grades{i},GRADES))) ' ' un_grades{i} ' units']);
 end
-%
-% % % % %
-% % % % % % general analysis functions  - the last argument if for single only
-%show_correlation_among_units(SESSION_IDS,UNIT_NUMS,GRADES,PVAL,PTHRESH,MODS,do_stims,INFO_STR,1);
-if SHOW_SINGLE_SESSION_CORRS
-    show_correlation_among_units(SESSION_IDS,UNIT_NUMS,GRADES,PVAL,PTHRESH,MODS,do_stims,INFO_STR,0);
-end
-
-% General response properties
-% CLUST_DIST = 'correlation';
-if DO_POPULATION_RESPONSE
-    show_population_response_features(PVAL,PTHRESH,MODS,GRADES,do_stims,INFO_STR,CLUST_DIST);
-end
 
 % % % % %
 if DO_PAIRWISE
     for i =1:length(pairwise_comp)
         do_pairwise_comparison_mf(MODS,STDS,PVAL,PTHRESH,GRADES,do_stims,pairwise_comp{i},GroupMembership,INFO_STR);
         %[mean,median,ttestpval,signpval] =
-    end
-end
-
-if DO_THREEWAY
-    for i =1:length(threeway_comp)
-        do_threeway_comparison(MODS,STDS,PVAL,PTHRESH,GRADES,do_stims,threeway_comp{i},INFO_STR)
     end
 end
 
