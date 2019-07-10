@@ -1,14 +1,46 @@
 function analyze_bruce_urine_responses
-% the function analyze the data. it plots each unit for manual selection,
-% present population respons properties and single sessions correlations.  
+% the function perform various analysis to data collected from AOB neurons from pregnant and naive females.
+% the function enable various analysis:
+%
+% PLOT_UNIST_FOR_MANUAL_SELECTION:
+%   allows going over all the units with significant response and plot the raster and psth of each unit and grade the amplitude of the response. 
+%   the classification is saved in excel containing all the units. 
+%
+% DO_PAIRWISE:
+% compare responses of 2 different groups of stimuli. 
+% 
+% COMPARE_BASELINES:
+% compare the baseline firing rate of units in different groups 
+% 
+% the functio define various parameters detemining which units to include in the analysis:
+%
+% manual_selection: a string, specifying which units to include according to their manual classification (units are classified as 'good','not sure' or 'bad'):
+%   'exclude bad': all  units except those that are classified as 'bad'
+%   'take only good': only units that are classified as 'good'
+%   'ignore': take all units. 
+% 
+% take_units: a string specifiying which units to include according to their identity:
+%   'Single': only single units
+%   'MUA+Single': single and multi units. 
+%
+% stim_set: a string  specifying which set of stimulation to analyze. 
+%   'normal_trials': include all 9 stimuli presented in normal trials (with wash at the end of each trial)
+%   'no_wash': anlaysis of the special trials where only 2 odors were presented with no wash between the trials. 
+%
+% TAKE_EPOCH:a string  specifying which time of the response to include in the analysis:
+%   'FULL': time window of 60 sec following application of odor
+%   'STIM': time window of 40 sec following nerve stimulation
+%   'SHORT_STIM: time window of 20 sec following nerve stimulation
+%   'BEST': compare amplitude of response of 'FULL' and 'STIM' and take values from the highest
+%
 
-% define which analysis to perform:
-PLOT_UNIST_FOR_MANUAL_SELECTION = 1;
-DO_PAIRWISE = 0;
-COMPARE_BASELINES=0;
 
-%% define the data to analyse:
-basepath='H:\MATLAB\Michals_data\';
+% manual_selection = 'take only good';
+% manual_selection = 'exclude bad';
+manual_selection = 'ignore';
+
+% take_units = 'Single';
+take_units = 'MUA+Single';
 
 stim_set= 'normal_trials';
 % stim_set= 'no_wash';
@@ -18,21 +50,22 @@ stim_set= 'normal_trials';
 TAKE_EPOCH   = 'STIM';
 % TAKE_EPOCH = 'SHORT_STIM';
 
+% define which analysis to perform:
+PLOT_UNIST_FOR_MANUAL_SELECTION = 1;
+DO_PAIRWISE = 0;
+COMPARE_BASELINES=0;
+
+%% define the data to analyse:
+basepath='H:\MATLAB\Michals_data\';
+
+
 %% define parameters
 % minimal number of required trials
 MINTRIALREQUIREMENT = 4;
 % minimal p value for including a response
 PTHRESH = 0.05;
 
-%% unit grade to include
-% take_units = 'Single';
-take_units = 'MUA+Single';
-% take_units = 'everything';
 
-%% whether to take only the good units upon visual selection
-% manual_selection = 'take only good';
-% manual_selection = 'exclude bad';
-manual_selection = 'ignore';
 %%
 mating_male_strain='ANY';
 %% Define the dataset
@@ -61,7 +94,7 @@ switch stim_set
         
         % Defines the entire set of stimuli to analyze
         do_stims{3} = 'MM';         % mating male
-        do_stims{4} = 'MFP';        % male-female-predator
+        do_stims{4} = 'MFP';        % male-female-predator mix
         do_stims{1} = 'NoWash_MFP'; % male-female-predator no wash
         do_stims{2} = 'NoWash_MM';  % mating male no wash
         
