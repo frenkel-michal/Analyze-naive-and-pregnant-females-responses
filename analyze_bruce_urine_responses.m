@@ -1,5 +1,5 @@
 function analyze_bruce_urine_responses
-% the function perform various analysis to data collected from AOB neurons from pregnant and naive females.
+% the function performs various analysis to data collected from AOB neurons from pregnant and naive females.
 % the function enable various analysis:
 %
 % PLOT_UNIST_FOR_MANUAL_SELECTION:
@@ -12,20 +12,20 @@ function analyze_bruce_urine_responses
 % COMPARE_BASELINES:
 % compare the baseline firing rate of units in different groups 
 % 
-% the functio define various parameters detemining which units to include in the analysis:
+% the function define various parameters determining which units to include in the analysis:
 %
 % manual_selection: a string, specifying which units to include according to their manual classification (units are classified as 'good','not sure' or 'bad'):
 %   'exclude bad': all  units except those that are classified as 'bad'
 %   'take only good': only units that are classified as 'good'
 %   'ignore': take all units. 
 % 
-% take_units: a string specifiying which units to include according to their identity:
+% take_units: a string specifying which units to include according to their identity:
 %   'Single': only single units
 %   'MUA+Single': single and multi units. 
 %
 % stim_set: a string  specifying which set of stimulation to analyze. 
 %   'normal_trials': include all 9 stimuli presented in normal trials (with wash at the end of each trial)
-%   'no_wash': anlaysis of the special trials where only 2 odors were presented with no wash between the trials. 
+%   'no_wash': analysis of the special trials where only 2 odors were presented with no wash between the trials. 
 %
 % TAKE_EPOCH:a string  specifying which time of the response to include in the analysis:
 %   'FULL': time window of 60 sec following application of odor
